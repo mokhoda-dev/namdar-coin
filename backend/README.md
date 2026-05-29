@@ -24,8 +24,8 @@ cp .env.example .env
 ```
 PORT=3000
 JWT_SECRET=یک-رشته-تصادفی-طولانی-بنویسید
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=Namdar1534000$
+ADMIN_USERNAME=USER-NAME
+ADMIN_PASSWORD=YOUR-PASSWORD-HERE
 TELEGRAM_BOT_TOKEN=توکن-بات-تلگرام-شما
 TELEGRAM_CHANNEL=@seeknamdar
 ```
