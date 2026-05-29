@@ -133,7 +133,7 @@ apt install nginx -y
 ```nginx
 server {
     listen 80;
-    server_name IP_SERVER;   # یا namdarcoin.ir بعد از خرید دامنه
+    server_name IP_SERVER;   # یا دلخواه بعد از خرید دامنه
 
     location / {
         proxy_pass http://localhost:3000;
