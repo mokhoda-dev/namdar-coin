@@ -156,9 +156,9 @@ nginx -t && systemctl reload nginx
 1. در تلگرام به **@BotFather** پیام بزنید
 2. `/mybots` ← `Namdarcoinpricebot` ← **API Token**
 3. توکن را در `backend/.env` بنویسید
-4. در کانال `@seeknamdar`: Settings ← Administrators ← Add Admin ← `@Namdarcoinpricebot`
-5. فقط **Post Messages** را فعال کنید
-6. در پنل ادمین سایت روی «تست اتصال» کلیک کنید
+4. در کانال `@CHANNEL_ID`: Settings ← Administrators ← Add Admin ← `@YOURBOT`
+6. فقط **Post Messages** را فعال کنید
+7. در پنل ادمین سایت روی «تست اتصال» کلیک کنید
 
 ---
 
