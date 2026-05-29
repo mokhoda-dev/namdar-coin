@@ -1,0 +1,51 @@
+[
+  {
+    "id": "sat",
+    "day": "شنبه",
+    "open": "10:00",
+    "close": "17:30",
+    "closed": false
+  },
+  {
+    "id": "sun",
+    "day": "یک‌شنبه",
+    "open": "10:00",
+    "close": "17:30",
+    "closed": false
+  },
+  {
+    "id": "mon",
+    "day": "دوشنبه",
+    "open": "10:00",
+    "close": "17:30",
+    "closed": false
+  },
+  {
+    "id": "tue",
+    "day": "سه‌شنبه",
+    "open": "10:00",
+    "close": "17:30",
+    "closed": false
+  },
+  {
+    "id": "wed",
+    "day": "چهارشنبه",
+    "open": "10:00",
+    "close": "17:30",
+    "closed": false
+  },
+  {
+    "id": "thu",
+    "day": "پنج‌شنبه",
+    "open": "10:00",
+    "close": "17:30",
+    "closed": false
+  },
+  {
+    "id": "fri",
+    "day": "جمعه",
+    "open": "10:00",
+    "close": "15:00",
+    "closed": true
+  }
+]

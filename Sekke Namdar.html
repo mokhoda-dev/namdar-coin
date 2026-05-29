@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<title>سکه نامدار — قیمت لحظه‌ای سکه</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" href="assets/logo.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --gold:       #d4a73a;
+    --gold-deep:  #a17a1f;
+    --paper:      #fdfaf2;
+    --paper-2:    #f4ecd9;
+    --ink:        #1c1814;
+    --ink-2:      #6d6358;
+    --ink-3:      rgba(28,24,20,0.32);
+    --line:       rgba(28,24,20,0.10);
+    --up:         #2d7a4a;
+    --down:       #b03a3a;
+  }
+  html[data-theme="dark"] {
+    --gold:       #e6c25c;
+    --gold-deep:  #d4a73a;
+    --paper:      #16130f;
+    --paper-2:    #1f1a14;
+    --ink:        #f3ecdb;
+    --ink-2:      #a89e8a;
+    --ink-3:      rgba(243,236,219,0.32);
+    --line:       rgba(243,236,219,0.10);
+    --up:         #6cc78a;
+    --down:       #e07474;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: "Vazirmatn", system-ui, -apple-system, sans-serif;
+    background: var(--paper-2);
+    color: var(--ink);
+    font-feature-settings: "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+  * { box-sizing: border-box; }
+  ::selection { background: rgba(212,167,58,0.35); }
+  a { color: inherit; }
+  table { font-feature-settings: "tnum" 1; }
+  /* avoid horizontal jitter on scroll-anchored screens */
+  html { scrollbar-gutter: stable; }
+
+  /* responsive: stack two-column layouts on small screens */
+  @media (max-width: 880px) {
+    main > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    main { padding-inline: 18px !important; }
+    header { padding: 14px 18px !important; }
+    header nav { gap: 14px !important; }
+    header nav span:nth-child(3) { display: none !important; }
+    h1 { font-size: 22px !important; }
+    table th, table td { padding-inline: 8px !important; }
+  }
+  @media (max-width: 560px) {
+    table th:nth-child(4), table td:nth-child(4),
+    table th:nth-child(5), table td:nth-child(5) { display: none; }
+    header nav span:nth-child(2) { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+  // Suppress harmless 'ResizeObserver loop' warning that some browsers emit
+  // during the tweaks panel's drag/resize — it is not an actual error.
+  window.addEventListener('error', (e) => {
+    if (e && e.message && e.message.includes('ResizeObserver loop')) {
+      e.stopImmediatePropagation();
+    }
+  });
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "light"
+}/*EDITMODE-END*/;
+
+function Root() {
+  const [tw, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', tw.theme);
+  }, [tw.theme]);
+  return (
+    <>
+      <App />
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Look" />
+        <TweakRadio label="Theme" value={tw.theme} onChange={(v) => setTweak('theme', v)}
+          options={[{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} />
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Root />);
+</script>
+</body>
+</html>

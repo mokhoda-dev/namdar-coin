@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<title>Namdar Coin — Wireframes</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* light "paper" wireframe palette */
+    --paper:    #f6f1e6;
+    --paper-2:  #ece5d3;
+    --ink:      #2a2620;
+    --ink-2:    #6a6258;
+    --ink-3:    rgba(42,38,32,0.35);
+    --ink-4:    rgba(42,38,32,0.08);
+    --accent:   #b88c45;   /* gold ink */
+  }
+  html[data-theme="dark"] {
+    --paper:    #1a1814;
+    --paper-2:  #221f19;
+    --ink:      #e8e2d2;
+    --ink-2:    #9a9080;
+    --ink-3:    rgba(232,226,210,0.32);
+    --ink-4:    rgba(232,226,210,0.06);
+    --accent:   #d6a866;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: "Vazirmatn", "SF Pro Text", system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  /* paper grain */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      radial-gradient(circle at 25% 30%, rgba(0,0,0,0.025), transparent 60%),
+      radial-gradient(circle at 75% 70%, rgba(0,0,0,0.02), transparent 60%);
+    mix-blend-mode: multiply;
+  }
+  html[data-theme="dark"] body::before { mix-blend-mode: screen; opacity: 0.5; }
+
+  /* sketchiness: rotate every artboard slightly */
+  [data-sketch="med"] .dc-card { transform: rotate(var(--rot, 0deg)); }
+  [data-sketch="high"] .dc-card { transform: rotate(var(--rot, 0deg)); filter: url(#wob); }
+
+  /* numbers everywhere should be tabular */
+  table { font-feature-settings: "tnum" 1; }
+
+  /* Persian numerals use Vazirmatn; monospace blocks switch to JB Mono */
+  [style*="monospace"] { font-family: "JetBrains Mono", "Vazirmatn", monospace !important; }
+</style>
+</head>
+<body>
+<!-- subtle wobble filter for high sketchiness -->
+<svg width="0" height="0" style="position:absolute">
+  <filter id="wob">
+    <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3" />
+    <feDisplacementMap in="SourceGraphic" scale="1.4" />
+  </filter>
+</svg>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="wireframes.jsx"></script>
+
+<script type="text/babel">
+const { useEffect, useState } = React;
+
+const DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "light",
+  "lang": "fa",
+  "density": "minimal",
+  "sparklines": true,
+  "sketch": "med"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [tw, setTweakRaw] = useTweaks(DEFAULTS);
+  const setTweak = (k, v) => (typeof k === 'object' ? setTweakRaw(k) : setTweakRaw({ [k]: v }));
+
+  // publish to globals so plain components can read without prop drilling
+  useEffect(() => {
+    window.__TWEAKS__ = tw;
+    document.documentElement.setAttribute('data-theme', tw.theme);
+    document.documentElement.setAttribute('data-sketch', tw.sketch);
+    document.documentElement.setAttribute('dir', tw.lang === 'en' ? 'ltr' : 'rtl');
+    document.documentElement.setAttribute('lang', tw.lang === 'en' ? 'en' : 'fa');
+    // force re-render of canvas children by bumping key — handled by parent key
+  }, [tw]);
+
+  // canvas re-mounts on lang/theme/sketch change so artboards refresh
+  const canvasKey = `${tw.theme}-${tw.lang}-${tw.sketch}-${tw.density}-${tw.sparklines}`;
+
+  const ARTBOARDS_PUBLIC = [
+    { id: 'a', label: 'A · Hero + table',   w: 920,  h: 760, comp: WF_HeroTable,    rot: -0.4 },
+    { id: 'b', label: 'B · Ticker + grid',  w: 920,  h: 760, comp: WF_TickerGrid,   rot: 0.3 },
+    { id: 'c', label: 'C · Two column',     w: 920,  h: 720, comp: WF_TwoCol,       rot: -0.25 },
+    { id: 'd', label: 'D · Market terminal',w: 1000, h: 720, comp: WF_Terminal,     rot: 0.2 },
+    { id: 'e', label: 'E · Mobile',         w: 360,  h: 720, comp: WF_Mobile,       rot: -0.3 },
+  ];
+  const ARTBOARDS_ADMIN = [
+    { id: 'login', label: 'Sign-in',          w: 920,  h: 600, comp: WF_AdminLogin, rot: 0.35 },
+    { id: 'dash',  label: 'Price console',    w: 1100, h: 780, comp: WF_AdminDash,  rot: -0.2 },
+  ];
+  const ARTBOARDS_INFO = [
+    { id: 'branch', label: 'Branch · contact', w: 920, h: 720, comp: WF_Branch,      rot: 0.25 },
+    { id: 'tg',     label: 'Telegram post',    w: 440, h: 880, comp: WF_TelegramPost,rot: -0.5 },
+  ];
+
+  const renderBoards = (boards) => boards.map(b => {
+    const Comp = b.comp;
+    return (
+      <DCArtboard key={b.id} id={b.id} label={b.label} width={b.w} height={b.h}>
+        <div style={{
+          width: '100%', height: '100%', background: 'var(--paper)',
+          color: 'var(--ink)', overflow: 'hidden', position: 'relative',
+          ['--rot']: (tw.sketch === 'none' ? '0deg' : `${b.rot}deg`),
+        }}>
+          <Comp />
+        </div>
+      </DCArtboard>
+    );
+  });
+
+  return (
+    <>
+      <DesignCanvas key={canvasKey}>
+        <DCSection id="public" title={tw.lang === 'en' ? 'Public · live pricing' : 'صفحه عمومی · قیمت لحظه‌ای'}
+          subtitle={tw.lang === 'en' ? '5 directions — desktop + mobile' : '۵ جهت — دسکتاپ و موبایل'}>
+          {renderBoards(ARTBOARDS_PUBLIC)}
+        </DCSection>
+        <DCSection id="admin" title={tw.lang === 'en' ? 'Admin · price console' : 'پنل مدیر · ویرایش قیمت'}
+          subtitle={tw.lang === 'en' ? 'sign-in and inline-edit dashboard' : 'ورود و ویرایش درجا'}>
+          {renderBoards(ARTBOARDS_ADMIN)}
+        </DCSection>
+        <DCSection id="info" title={tw.lang === 'en' ? 'Branch + Telegram' : 'شعبه و کانال تلگرام'}
+          subtitle={tw.lang === 'en' ? 'contact page and auto-post format' : 'صفحه تماس و قالب پست خودکار'}>
+          {renderBoards(ARTBOARDS_INFO)}
+        </DCSection>
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Look">
+          <TweakRadio label="Theme" value={tw.theme} onChange={v => setTweak('theme', v)}
+            options={[{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} />
+          <TweakRadio label="Language" value={tw.lang} onChange={v => setTweak('lang', v)}
+            options={[{ value: 'fa', label: 'فا' }, { value: 'en', label: 'EN' }]} />
+          <TweakRadio label="Sketchiness" value={tw.sketch} onChange={v => setTweak('sketch', v)}
+            options={[{ value: 'none', label: 'None' }, { value: 'med', label: 'Med' }, { value: 'high', label: 'High' }]} />
+        </TweakSection>
+        <TweakSection label="Content">
+          <TweakRadio label="Density" value={tw.density} onChange={v => setTweak('density', v)}
+            options={[{ value: 'minimal', label: 'Min' }, { value: 'balanced', label: 'Bal' }, { value: 'dense', label: 'Dense' }]} />
+          <TweakToggle label="Sparklines" value={tw.sparklines} onChange={v => setTweak('sparklines', v)} />
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<title>سکه نامدار — قیمت لحظه‌ای سکه</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="قیمت لحظه‌ای سکه امامی، بهار آزادی، نیم‌سکه و ربع‌سکه — سکه نامدار، اطلس مال تهران" />
+<link rel="icon" href="assets/logo.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --gold:       #d4a73a;
+    --gold-deep:  #a17a1f;
+    --paper:      #fdfaf2;
+    --paper-2:    #f4ecd9;
+    --ink:        #1c1814;
+    --ink-2:      #6d6358;
+    --ink-3:      rgba(28,24,20,0.32);
+    --line:       rgba(28,24,20,0.10);
+    --up:         #2d7a4a;
+    --down:       #b03a3a;
+  }
+  html[data-theme="dark"] {
+    --gold:       #e6c25c;
+    --gold-deep:  #d4a73a;
+    --paper:      #16130f;
+    --paper-2:    #1f1a14;
+    --ink:        #f3ecdb;
+    --ink-2:      #a89e8a;
+    --ink-3:      rgba(243,236,219,0.32);
+    --line:       rgba(243,236,219,0.10);
+    --up:         #6cc78a;
+    --down:       #e07474;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: "Vazirmatn", system-ui, -apple-system, sans-serif;
+    background: var(--paper-2);
+    color: var(--ink);
+    font-feature-settings: "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+  * { box-sizing: border-box; }
+  ::selection { background: rgba(212,167,58,0.35); }
+  a { color: inherit; }
+  table { font-feature-settings: "tnum" 1; }
+  html { scrollbar-gutter: stable; }
+
+  @media (max-width: 880px) {
+    main > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    main { padding-inline: 18px !important; }
+    header { padding: 14px 18px !important; }
+    header nav { gap: 14px !important; }
+    header nav span:nth-child(3) { display: none !important; }
+    h1 { font-size: 22px !important; }
+    table th, table td { padding-inline: 8px !important; }
+  }
+  @media (max-width: 560px) {
+    table th:nth-child(4), table td:nth-child(4),
+    table th:nth-child(5), table td:nth-child(5) { display: none; }
+    header nav span:nth-child(2) { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="app.jsx"></script>
+
+<script type="text/babel">
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
